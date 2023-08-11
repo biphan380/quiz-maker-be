@@ -22,3 +22,10 @@ recent_act = load_docs("docs/recent_act")
 
 # load the old provincial offences act
 old_act = load_docs("docs/old_act")
+
+from llama_index import ServiceContext, set_global_service_context
+from llama_index.llms import OpenAI
+
+# create a global service context
+service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-4", temperature=0))
+set_global_service_context(service_context)

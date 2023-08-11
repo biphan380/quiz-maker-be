@@ -29,3 +29,17 @@ from llama_index.llms import OpenAI
 # create a global service context
 service_context = ServiceContext.from_defaults(llm=OpenAI(model="gpt-4", temperature=0))
 set_global_service_context(service_context)
+
+from llama_index import VectorStoreIndex, StorageContext, load_index_from_storage
+
+# create a vector store index for each folder
+# try and load the index if already made, else make it
+try:
+    recent_act_index = load_index_from_storage(StorageContext.from_defaults(persist_dir="./recent_act_index"))
+    old_act_index = load_index_from_storage(StorageContext.from_defaults(persist_dir="./old_act_index/"))
+
+except:
+    recent_act_index = VectorStoreIndex.from_documents(recent_act)
+    recent_act_index.storage_context.persist(persist_dir="./recent_act_index")
+    old_act_index = VectorStoreIndex.from_documents(old_act)
+    old_act_index.storage_context.persist(persist_dir="./old_act_index")
